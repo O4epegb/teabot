@@ -8,11 +8,9 @@ const server = new Hapi.Server();
 server.connection({port: port});
 
 server.register(require('inert'), (err) => {
-
     if (err) {
         throw err;
     }
-
     server.route({
         method: 'GET',
         path: '/{path*}',
@@ -23,7 +21,6 @@ server.register(require('inert'), (err) => {
 });
 
 server.start((err) => {
-
     if (err) {
         throw err;
     }
@@ -35,7 +32,6 @@ module.exports = (bot) => {
         method: 'POST',
         path: '/' + bot.token,
         handler: (request, reply) => {
-            console.log(request.payload)
             bot.processUpdate(request.payload);
             return reply('ok');
         }
