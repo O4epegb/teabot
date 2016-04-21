@@ -7,13 +7,13 @@ var options = {
     path: "/forweb/"
 };
 
-function sendRandomBashImQuote(aMessageChatId, bot) {
+function sendRandomBashImQuote(aMessageObject, bot) {
     http.get(options, function(res) {
         res.pipe(iconv.decodeStream('win1251')).collect(function(err, decodedBody) {
-            console.log(decodedBody)
+            // console.log(decodedBody)
             var content = getQuoteBlockFromContent(decodedBody);
             content = removeAllMarkUp(content[1]);
-            sendMessageByBot(aMessageChatId, content, bot);
+            sendMessageByBot(aMessageObject.chat.id, content, bot);
         });
     });
 }
@@ -38,7 +38,9 @@ function getQuoteBlockFromContent(aString) {
 }
 
 function sendMessageByBot(aChatId, aMessage, bot) {
-    bot.sendMessage(aChatId, aMessage, {caption: 'I\'m a cute bot!'});
+    bot.sendMessage(aChatId, aMessage, {
+        caption: 'I\'m a cute bot!'
+    });
 }
 
 module.exports = sendRandomBashImQuote;

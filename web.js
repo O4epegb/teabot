@@ -5,7 +5,9 @@ const Hapi = require('hapi');
 const port = process.env.PORT || 3000
 
 const server = new Hapi.Server();
-server.connection({port: port});
+server.connection({
+    port: port
+});
 
 server.register(require('inert'), (err) => {
     if (err) {
