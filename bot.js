@@ -77,7 +77,7 @@ bot.on('message', (msg) => {
             .forEach(command => commands[command].call(msg, command))
 
         if (notFoundCommands.length) {
-            var commands = notFoundCommands.reduce((prev, curr, index, array) => {
+            var commandsString = notFoundCommands.reduce((prev, curr, index, array) => {
                 if (array.length === 1) {
                     return curr;
                 } else if (index === array.length - 1) {
@@ -91,7 +91,7 @@ bot.on('message', (msg) => {
             var commandNoun = getDeclension(notFoundCommands.length, ['Команд', 'Команда', 'Команды']);
             var foundNoun = getDeclension(notFoundCommands.length, ['найдено', 'найдена', 'найдены']);
             bot.sendMessage(msg.chat.id,
-                `${commandNoun} ${commands} не ${foundNoun}, введите /help, чтобы увидеть список всех команд`);
+                `${commandNoun} ${commandsString} не ${foundNoun}, введите /help, чтобы увидеть список всех команд`);
         }
     }
 });
