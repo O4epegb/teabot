@@ -1,8 +1,11 @@
 var TelegramBot = require('node-telegram-bot-api');
+var sendRandomBashImQuote = require('./bashQuote');
+
 var token;
 var bot;
+var productionMode = process.env.NODE_ENV === 'production';
 
-if (process.env.NODE_ENV === 'production') {
+if (productionMode) {
     token = process.env.BOT_TOKEN;
     bot = new TelegramBot(token);
     bot.setWebHook('https://mysterious-sands-41657.herokuapp.com/' + bot.token);
@@ -11,44 +14,45 @@ if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token, {polling: true});
 }
 
-console.log('Bot server started in ' + (process.env.NODE_ENV === 'production'
+console.log('Bot server started in ' + (productionMode
     ? 'production'
     : 'debug') + ' mode');
 
 // hello command
-bot.onText(/^\/say_hello (.+)$/, function(msg, match) {
+bot.onText(/^\/say_hello (.+)$/, (msg, match) => {
     var name = match[1];
-    bot.sendMessage(msg.chat.id, 'Hey, Hola, Hello ' + name + '!').then(function() {
+    bot.sendMessage(msg.chat.id, 'Hey, Hola, Hello ' + name + '!').then(() => {
         // reply sent!
     });
 });
 
 // sum command
-bot.onText(/^\/sum((\s+\d+)+)$/, function(msg, match) {
+bot.onText(/^\/sum((\s+\d+)+)$/, (msg, match) => {
     var result = 0;
-    match[1].trim().split(/\s+/).forEach(function(i) {
+    match[1].trim().split(/\s+/).forEach((i) => {
         result += (+ i || 0);
     })
-    bot.sendMessage(msg.chat.id, result).then(function() {
+    bot.sendMessage(msg.chat.id, result).then(() => {
         // reply sent!
     });
 });
 
 // Any kind of message
-bot.on('message', function(msg) {
+bot.on('message', (msg) => {
     console.log(msg);
 });
 
-var sendRandomBashImQuote = require('./bashQuote');
-
-bot.onText(/^\/bash$/, function(msg) {
+bot.onText(/^\/bash$/, (msg) => {
     var messageChatId = msg.chat.id;
     var messageText = msg.text;
     var messageDate = msg.date;
     var messageUser = msg.from.username;
 
     sendRandomBashImQuote(messageChatId, bot);
+});
 
+bot.on('inline_query', (msg) => {
+    console.log('yay inline_query', msg);
 });
 
 module.exports = bot;

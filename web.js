@@ -1,26 +1,42 @@
-var express = require('express');
-var packageInfo = require('./package.json');
-var bodyParser = require('body-parser');
+'use strict';
 
-var app = express();
-app.use(bodyParser.json());
+const Hapi = require('hapi');
 
-// app.get('/', function(req, res) {
-//     res.json({version: packageInfo.version});
-// });
+const port = process.env.PORT || 3000
 
-app.use(express.static('public'));
+const server = new Hapi.Server();
+server.connection({port: port});
 
-var server = app.listen(process.env.PORT, function() {
-    var host = server.address().address;
-    var port = server.address().port;
+server.register(require('inert'), (err) => {
 
-    console.log('Web server started at http://%s:%s', host, port);
+    if (err) {
+        throw err;
+    }
+
+    server.route({
+        method: 'GET',
+        path: '/{path*}',
+        handler: {
+            file: './public/index.html'
+        }
+    });
 });
 
-module.exports = function(bot) {
-    app.post('/' + bot.token, function(req, res) {
-        bot.processUpdate(req.body);
-        res.sendStatus(200);
+server.start((err) => {
+
+    if (err) {
+        throw err;
+    }
+    console.log('Web server started at:', server.info.uri);
+});
+
+module.exports = (bot) => {
+    server.route({
+        method: 'POST',
+        path: '/' + bot.token,
+        handler: (request, reply) => {
+            bot.processUpdate(request.body);
+            return reply('ok');
+        }
     });
 };
