@@ -35,6 +35,7 @@ module.exports = (bot) => {
         method: 'POST',
         path: '/' + bot.token,
         handler: (request, reply) => {
+            console.log(request)
             bot.processUpdate(request.body);
             return reply('ok');
         }
