@@ -46,21 +46,41 @@ var commands = {
         }
     },
     "/keys": {
-      description: 'test command for keyboard',
-      call: (msg) => {
-          var opts = {
-              reply_to_message_id: msg.message_id,
-              reply_markup: JSON.stringify({
-                  keyboard: [
-                      ['Yes'],
-                      ['No']
-                  ],
-                  one_time_keyboard: true,
-                  resize_keyboard: true
-              })
-          };
-          bot.sendMessage(msg.chat.id, 'Do you love me?', opts);
-      }
+        description: 'test command for keyboard',
+        call: (msg) => {
+            var opts = {
+                reply_to_message_id: msg.message_id,
+                reply_markup: JSON.stringify({
+                    keyboard: [
+                        ['Yes'],
+                        ['No']
+                    ],
+                    one_time_keyboard: true,
+                    resize_keyboard: true
+                })
+            };
+            bot.sendMessage(msg.chat.id, 'Do you love me?', opts);
+        }
+    },
+    "/coords": {
+        description: 'test command for getting location',
+        call: (msg) => {
+            var opts = {
+                reply_to_message_id: msg.message_id,
+                reply_markup: JSON.stringify({
+                    keyboard: [
+                        [{
+                            text: 'Yes',
+                            request_location: true
+                        }],
+                        ['No']
+                    ],
+                    one_time_keyboard: true,
+                    resize_keyboard: true
+                })
+            };
+            bot.sendMessage(msg.chat.id, 'Want to share your coords?', opts);
+        }
     },
     "/help": {
         description: 'helping you',
@@ -70,19 +90,23 @@ var commands = {
     }
 }
 
-bot.on('text', function(msg)
-{
+bot.on('text', function(msg) {
     var messageChatId = msg.chat.id;
     var messageText = msg.text;
 
     if (messageText === 'Yes') {
-        bot.sendMessage(messageChatId, 'I\'m too love you!', { caption: 'I\'m bot!' });
+        bot.sendMessage(messageChatId, 'I\'m too love you!', {
+            caption: 'I\'m bot!'
+        });
     }
 
     if (messageText === 'No') {
-        bot.sendMessage(messageChatId, ':(', { caption: 'I\'m bot!' });
+        bot.sendMessage(messageChatId, ':(', {
+            caption: 'I\'m bot!'
+        });
     }
 });
+
 
 function getAllCommandsReply() {
     var msg = Object.keys(commands).map(command => {
