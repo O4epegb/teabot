@@ -1,5 +1,6 @@
 var TelegramBot = require('node-telegram-bot-api');
 var sendRandomBashImQuote = require('./bashQuote');
+var getDeclension = require('./utils').getDeclension;
 
 var token;
 var bot;
@@ -44,13 +45,44 @@ var commands = {
             bot.sendMessage(msg.chat.id, result || 'fuck off')
         }
     },
+    "/keys": {
+      description: 'test command for keyboard',
+      call: (msg) => {
+          var opts = {
+              reply_to_message_id: msg.message_id,
+              reply_markup: JSON.stringify({
+                  keyboard: [
+                      ['Yes'],
+                      ['No']
+                  ],
+                  one_time_keyboard: true,
+                  resize_keyboard: true
+              })
+          };
+          bot.sendMessage(msg.chat.id, 'Do you love me?', opts);
+      }
+    },
     "/help": {
         description: 'helping you',
         call: (msg) => {
-            bot.sendMessage(msg.chat.id, getAllCommandsReply())
+            bot.sendMessage(msg.chat.id, getAllCommandsReply());
         }
     }
 }
+
+bot.on('text', function(msg)
+{
+    var messageChatId = msg.chat.id;
+    var messageText = msg.text;
+
+    if (messageText === 'Yes') {
+        bot.sendMessage(messageChatId, 'I\'m too love you!', { caption: 'I\'m bot!' });
+    }
+
+    if (messageText === 'No') {
+        bot.sendMessage(messageChatId, ':(', { caption: 'I\'m bot!' });
+    }
+});
 
 function getAllCommandsReply() {
     var msg = Object.keys(commands).map(command => {
@@ -58,9 +90,6 @@ function getAllCommandsReply() {
     })
     return msg.join('\n');
 }
-
-var getDeclension = require('./utils').getDeclension
-console.log(getDeclension)
 
 // Any kind of message
 bot.on('message', (msg) => {
