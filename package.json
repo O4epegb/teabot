@@ -4,16 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon index.js",
     "start": "node ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.16.1",
+    "cookie": "^0.3.1",
     "hapi": "^13.3.0",
     "iconv-lite": "^0.4.13",
     "inert": "^3.2.0",
-    "node-telegram-bot-api": "^0.21.1"
+    "lodash": "^4.17.4",
+    "node-telegram-bot-api": "^0.27.0",
+    "nodemon": "^1.11.0"
   }
 }

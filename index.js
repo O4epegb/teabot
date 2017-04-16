@@ -1,2 +1,4 @@
-var bot = require('./bot');
-require('./web')(bot);
+const bot = require('./bot');
+const server = require('./web');
+
+server(bot);
