@@ -2,14 +2,14 @@
 
 const Hapi = require('hapi');
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 
 const server = new Hapi.Server();
 server.connection({
     port: port
 });
 
-server.register(require('inert'), (err) => {
+server.register(require('inert'), err => {
     if (err) {
         throw err;
     }
@@ -22,14 +22,14 @@ server.register(require('inert'), (err) => {
     });
 });
 
-server.start((err) => {
+server.start(err => {
     if (err) {
         throw err;
     }
     console.log('Web server started at:', server.info.uri);
 });
 
-module.exports = (bot) => {
+module.exports = bot => {
     server.route({
         method: 'POST',
         path: '/' + bot.token,

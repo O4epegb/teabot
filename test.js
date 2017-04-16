@@ -1,4 +1,4 @@
-var google = require('google')
+var google = require('google');
 
 // google.resultsPerPage = 25;
 //
@@ -12,3 +12,9 @@ var google = require('google')
 //     console.log(subStrStart.substring(ampIndex, queueIndex).replace('/search?q=', ''));
 //
 // })
+
+const { getHotTours, getTours } = require('./toursApi.js');
+
+getTours(19, 402).then(response => {
+    console.log('test', response.data.result.data);
+});

@@ -2,9 +2,9 @@ var http = require('http');
 var iconv = require('iconv-lite');
 
 var options = {
-    host: "bash.im",
+    host: 'bash.im',
     port: 80,
-    path: "/forweb/"
+    path: '/forweb/'
 };
 
 function sendRandomBashImQuote(aMessageObject, bot) {
@@ -21,7 +21,7 @@ function sendRandomBashImQuote(aMessageObject, bot) {
 function removeAllMarkUp(aString) {
     var cleanQuote = replaceAll(aString, "<' + 'br>", '\n');
     cleanQuote = replaceAll(cleanQuote, "<' + 'br />", '\n');
-    cleanQuote = replaceAll(cleanQuote, '&quot;', '\"');
+    cleanQuote = replaceAll(cleanQuote, '&quot;', '"');
     cleanQuote = replaceAll(cleanQuote, '&lt;', '<');
     cleanQuote = replaceAll(cleanQuote, '&gt;', '>');
     return cleanQuote;
@@ -33,13 +33,13 @@ function replaceAll(aString, aFingString, aReplaceString) {
 
 function getQuoteBlockFromContent(aString) {
     var quoteBlock = aString.replace('<\' + \'div id="b_q_t" style="padding: 1em 0;">', '__the_separator__');
-    quoteBlock = quoteBlock.replace('<\' + \'/div><\' + \'small>', '__the_separator__');
+    quoteBlock = quoteBlock.replace("<' + '/div><' + 'small>", '__the_separator__');
     return quoteBlock.split('__the_separator__');
 }
 
 function sendMessageByBot(aChatId, aMessage, bot) {
     bot.sendMessage(aChatId, aMessage, {
-        caption: 'I\'m a cute bot!'
+        caption: "I'm a cute bot!"
     });
 }
 
